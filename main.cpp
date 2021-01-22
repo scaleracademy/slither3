@@ -1,21 +1,50 @@
 #include <iostream>
 #include <curses.h>
+#include "ui.h"
+#include "game.h"
+#include <chrono>
+#include "settings_constants.h"
 
 using namespace std;
 
+ // microseconds , time taken by one frame to execute -  4 sec
+void event_loop(){
+    // next probem - mainatain the speed
+    
+    // auto last_time = chrono::system_clock::now();
+    int dt;
+    while(true){
+        auto last_time = chrono::system_clock::now();   
+        erase();
+        //........... 0.2 seconds , 0.3  -> let's say there is some computation
+        game_logic();
+        refresh();
+
+        do {
+            auto current_time = chrono::system_clock::now();
+            dt = chrono::duration_cast<std::chrono::microseconds>(current_time - last_time).count();
+        } while(dt < TIME_DELAY_BETWEEN_FRAMES);
+
+        // 10 frames - 1 sec
+        // 1 frame - 0.1 sec
+        // 100 ms
+        // 1sec - 10^6 microseconds
+        // 0.1 -> 10 ^ 5 microseconds
+        
+        
+
+        
+        // sleep(100); // sleep of 100 ms (0.1 sec), 1 sec = 1000 ms
+        // 1 sec - 10 frames / sec
+        // 1 sec -  3 frames / sec
+        // bad for a game to have variable fps
+    }
+}
 
 int main(){
-    // ncurses put things on a temp screen
-    initscr();
-    move(10,10);
-    // cout << "#" << endl;
-    addch('#');
-    getch();
-    // addstr();
-    endwin();
-    // ncurses
-    // sudo apt-get install libncurses6 libncurses6-dev
-    // brew install ncurses
+    init_ui();
+    event_loop();
+    tear_down_ui();
     return 0;
 }
 
