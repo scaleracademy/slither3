@@ -5,15 +5,30 @@ int game_state = BEFORE_START; // by default
 
 int direction;
 
+int score;
+
 void start_game(){
     init_snake();
-    // init_food();
+    init_food();
     direction = UP; // intially 
     game_state = STARTED;
+    score = 0;
 }
 
-void game_logic(){
+void end_game(){
+    // end state -> before_start state
+    game_state = ENDED;
+}
+
+void paint_status(){
+    move(0 , 5);
+    // printf
+    printw("Score %d" , score);
+}
+
+bool game_logic(){
     paint_border();
+    paint_status();
 
     int key = getch(); // blocking input
 
@@ -24,7 +39,7 @@ void game_logic(){
             // start the game
             start_game();
         }
-    } else {
+    } else if(game_state == STARTED) {
         // either keep moving snake
         // or react to key inputs
         if(key == UP && direction != DOWN){
@@ -36,10 +51,30 @@ void game_logic(){
         } else if (key == RIGHT && direction != LEFT){
             direction = RIGHT;
         }
-        move_snake(direction);
+        pair < int , int > head = move_snake(direction);
+        // foood position == head of snake
+        // if its true , then eat the food and grow the snake
+        if(try_eating_food(head)){
+            score ++;
+            grow_snake();
+        }
+        if(has_collision()){
+            // end the game
+            end_game();
+        }
         paint_snake();
+        paint_food();
+    } else {
+        // state is ended
+        move(10, 10);
+        addstr("GAME OVER! Press space to restart , q to quit");
+        if(key == 32){
+            start_game();
+        } else if(key == 'q'){
+            return true; // game_over
+        }
     }
-
+    return false;
 
     // if(key == UP){
     //     x--;

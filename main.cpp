@@ -17,7 +17,12 @@ void event_loop(){
         auto last_time = chrono::system_clock::now();   
         erase();
         //........... 0.2 seconds , 0.3  -> let's say there is some computation
-        game_logic();
+        bool game_over;
+        game_over = game_logic();
+        
+        if(game_over)
+        break;
+
         refresh();
 
         do {
@@ -45,6 +50,7 @@ int main(){
     init_ui();
     event_loop();
     tear_down_ui();
+    cout << "THANKS FOR PLAYING SNAKE GAME! BUT DON\'T BE A SNAKE IN REAL WORLD" << endl;
     return 0;
 }
 

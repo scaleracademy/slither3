@@ -4,6 +4,8 @@ char border_character = (char)219; // 254 - block
 void init_ui(){
     initscr();
     nodelay(stdscr ,TRUE); // stop getch to block my input
+    noecho(); // stop the echo
+    curs_set(0); // remove the cursor
 }
 
 void tear_down_ui(){

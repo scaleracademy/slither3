@@ -4,9 +4,14 @@
 
 #include <curses.h>
 #include "settings_constants.h"
+#include <vector>
+
+using namespace std;
 
 void init_snake();
 void paint_snake();
-void move_snake(int direction);
+pair < int , int > move_snake(int direction);
+void grow_snake();
+bool has_collision();
 
 #endif

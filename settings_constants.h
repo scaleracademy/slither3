@@ -10,10 +10,12 @@ const int UP = 'w',
          RIGHT = 'd';
 
 const int BEFORE_START = 0,
-            STARTED = 1;
+            STARTED = 1,
+            ENDED = 2;
 // const int ARROW_UP = 'w',
 //          ARROW_DOWN = 's',
 //          ARROW_LEFT = 'a',
 //          ARROW_RIGHT = 'd';         
 
+const int FOOD_COUNT = 5;
 #endif
